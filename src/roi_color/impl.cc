@@ -1,7 +1,7 @@
 #include "impls.h"
 #include <unordered_map>
-
-
+#include <opencv2/opencv.hpp>
+#include <vector>
 std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input) {
     /**
      * INPUT: 一张彩色图片, 路径: opencv/assets/roi_color/input.png
@@ -30,6 +30,45 @@ std::unordered_map<int, cv::Rect> roi_color(const cv::Mat& input) {
      */
     std::unordered_map<int, cv::Rect> res;
     // IMPLEMENT YOUR CODE HERE
+
+    std::vector<std::vector<cv::Point>> contours;
+    std::vector<cv::Vec4i> hierarchy;
+
+    cv::Mat gray;
+    if (input.channels() == 3) {
+        cv::cvtColor(input, gray, cv::COLOR_BGR2GRAY);
+    } else {
+        gray = input.clone();
+    }
+
+    cv::GaussianBlur(gray, gray, cv::Size(5, 5), 0);
+
+    cv::Mat edges;
+    cv::Canny(gray, edges, 50, 150);
+
+    cv::findContours(edges, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+    std::vector<cv::Rect> rects;
+    for (size_t i = 0; i < contours.size(); i++) {
+        if (hierarchy[i][3] == -1) { 
+            rects.push_back(cv::boundingRect(contours[i]));
+        }
+    }
+
+    if (rects.size() > 3) {
+        rects.resize(3);
+    }
+
+    for (size_t i = 0; i < rects.size(); i++) {
+        cv::Mat roi = input(rects[i]);
+        cv::Scalar mean_color = cv::mean(roi);
+        int color_index = 0;
+        if (mean_color[2] > mean_color[1] && mean_color[2] > mean_color[0]) color_index = 2; // Red
+        else if (mean_color[1] > mean_color[0] && mean_color[1] > mean_color[2]) color_index = 1; // Green
+        else color_index = 0; // Blue
+        res[color_index] = rects[i];
+    }
+
 
     return res;
 }

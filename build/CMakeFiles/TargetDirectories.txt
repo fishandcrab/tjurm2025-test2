@@ -1,0 +1,3 @@
+/home/xiexie/桌面/tjurm2025-test2/build/CMakeFiles/tjurm_tutorial.dir
+/home/xiexie/桌面/tjurm2025-test2/build/CMakeFiles/edit_cache.dir
+/home/xiexie/桌面/tjurm2025-test2/build/CMakeFiles/rebuild_cache.dir

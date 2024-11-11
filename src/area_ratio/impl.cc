@@ -1,6 +1,5 @@
 #include "impls.h"
 
-
 float compute_area_ratio(const std::vector<cv::Point>& contour) {
     /**
      * 要求：
@@ -13,5 +12,8 @@ float compute_area_ratio(const std::vector<cv::Point>& contour) {
      * 通过条件:
      * 运行测试点，通过即可。
      */
-    return 0.f;
+  
+   float area_ratio=cv::contourArea(contour)/cv::minAreaRect(contour).size.area();
+
+    return area_ratio;
 }

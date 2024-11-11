@@ -82,7 +82,7 @@ resize
    compute_iou
    compute_area_ratio
    roi_color
-   resize
+   resize 
    ```
 
    假设你要运行`erode`，`find_contours`两个测试点，你就把这两行挪到`stop`上面就行，`stop`以下的都不会被运行。
@@ -93,7 +93,7 @@ resize
    mkdir build
    cd build
    cmake ..
-   make -j4
+  make -j4
    ```
 
    注意，一行一行执行，别直接图省事儿一次性复制了。

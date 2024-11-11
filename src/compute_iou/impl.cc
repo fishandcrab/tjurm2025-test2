@@ -1,6 +1,5 @@
 #include "impls.h"
 #include <algorithm>
-
 float compute_iou(const cv::Rect& a, const cv::Rect& b) {
     /**
      * 要求：
@@ -17,5 +16,21 @@ float compute_iou(const cv::Rect& a, const cv::Rect& b) {
      * 运行测试点，显示通过就行，不通过会告诉你哪一组矩形错了。
     */
     // IMPLEMENT YOUR CODE HERE
-    return 0.f;
+ 
+
+
+cv::Rect intersection = a & b;
+
+
+float intersectionArea = intersection.width * intersection.height;
+ if (intersectionArea == 0) return 0.f; 
+
+
+float unionArea = a.area() + b.area() - intersectionArea;
+
+
+float iou = intersectionArea / unionArea;
+return iou;
+ 
+
 }
